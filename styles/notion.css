@@ -85,3 +85,11 @@ pre[class*='language-'] {
 .notion-collection-row {
   @apply hidden;
 }
+
+/* custom */
+.notion ul{
+  @apply w-full;
+}
+.notion pre {
+  @apply max-w-full overflow-x-scroll;
+}
