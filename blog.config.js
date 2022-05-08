@@ -2,10 +2,10 @@ const BLOG = {
   title: 'Jeekdong',
   author: 'Jeekdong',
   email: 'jeekdong@gmail.com',
-  link: 'https://jeekdong-notion-blog.vercel.app/',
+  link: 'https://jeekdong.me/',
   description: 'jeekdong blog.',
   lang: 'zh-CN', // ['en-US', 'zh-CN', 'zh-HK', 'zh-TW', 'ja-JP', 'es-ES']
-  appearance: 'auto', // ['light', 'dark', 'auto'],
+  appearance: 'light', // ['light', 'dark', 'auto'],
   font: 'sans-serif', // ['sans-serif', 'serif']
   lightBackground: '#ffffff', // use hex value, don't forget '#' e.g #fffefc
   darkBackground: '#18181B', // use hex value, don't forget '#'
@@ -17,7 +17,7 @@ const BLOG = {
   showArchive: true,
   autoCollapsedNavBar: false, // The automatically collapsed navigation bar
   ogImageGenerateURL: 'https://og-image-craigary.vercel.app', // The link to generate OG image, don't end with a slash
-  socialLink: 'https://twitter.com/craigaryhart',
+  socialLink: '',
   seo: {
     keywords: ['Blog', 'Website', 'Notion', 'jeekdong'],
     googleSiteVerification: '' // Remove the value or replace it with your own google site verification code
