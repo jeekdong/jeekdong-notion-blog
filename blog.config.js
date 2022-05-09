@@ -3,7 +3,7 @@ const BLOG = {
   author: 'Jeekdong',
   email: 'jeekdong@gmail.com',
   link: 'https://jeekdong.me/',
-  description: 'jeekdong blog.',
+  description: '',
   lang: 'zh-CN', // ['en-US', 'zh-CN', 'zh-HK', 'zh-TW', 'ja-JP', 'es-ES']
   appearance: 'light', // ['light', 'dark', 'auto'],
   font: 'sans-serif', // ['sans-serif', 'serif']

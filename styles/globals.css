@@ -86,8 +86,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .header-name {
-  display: none;
-  opacity: 0;
+  @apply dark:text-gray-300 text-gray-600;
   overflow: hidden;
 }
 
@@ -124,12 +123,7 @@ nav {
   }
   .header-name {
     display: block;
-    opacity: 0;
     transition: all 0.5s cubic-bezier(0.4, 0, 0, 1);
-  }
-  .sticky-nav-full .header-name {
-    opacity: 1;
-    @apply dark:text-gray-300 text-gray-600;
   }
 }
 

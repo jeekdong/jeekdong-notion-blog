@@ -78,24 +78,17 @@ const Header = ({ navBarTitle, fullWidth }) => {
                 src={`https://cravatar.cn/avatar/${EMAIL_HASH}`}
                 className="rounded-full mb-2"
               />
-              {
-                !navBarTitle && (
-                  <span className="inline-block ml-2">
-                    Jeekdong
-                  </span>
-                )
-              }
             </a>
           </Link>
           {navBarTitle
             ? (
-            <p className="ml-8 font-medium text-day dark:text-night header-name">
+            <p className="ml-3 md:ml-8 font-medium text-day dark:text-night header-name max-w-[40vw] md:max-w-sm truncate">
               {navBarTitle}
             </p>
               )
             : (
             <p className="ml-2 font-medium text-day dark:text-night header-name">
-              {BLOG.title},{' '}
+              {BLOG.title}{' '}
               <span className="font-normal">{BLOG.description}</span>
             </p>
               )}

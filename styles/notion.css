@@ -93,3 +93,11 @@ pre[class*='language-'] {
 .notion pre {
   @apply max-w-full overflow-x-scroll;
 }
+
+/* 修复 notion 展示样式问题 */
+details {
+  width: 100%;
+}
+.notion-callout-text div {
+  width: 100%!important;
+}
