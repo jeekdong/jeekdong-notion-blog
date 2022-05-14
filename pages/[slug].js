@@ -2,6 +2,7 @@ import Layout from '@/layouts/layout'
 import { getAllPosts, getPostBlocks } from '@/lib/notion'
 import BLOG from '@/blog.config'
 import { createHash } from 'crypto'
+import { replaceImgCdn } from '@/components/upload-image'
 
 const BlogPost = ({ post, blockMap, emailHash }) => {
   if (!post) return null
@@ -27,6 +28,7 @@ export async function getStaticProps ({ params: { slug } }) {
   const posts = await getAllPosts({ includePages: true })
   const post = posts.find(t => t.slug === slug)
   const blockMap = await getPostBlocks(post.id)
+  await replaceImgCdn(blockMap)
   const emailHash = createHash('md5')
     .update(BLOG.email)
     .digest('hex')
