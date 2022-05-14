@@ -1,10 +1,13 @@
 import qiniu from 'qiniu'
 import path from 'path'
 import https from 'https'
+import { defaultMapImageUrl } from 'react-notion-x'
+import bytes from 'bytes'
 import {
   POST_PREFIX,
   BUCKET,
-  CDN_URL
+  CDN_URL,
+  DEFAULT_WIDTH
 } from '@/lib/constants'
 
 const uploadConfig = () => {
@@ -53,7 +56,7 @@ const checkStat = ({
 }
 
 const uploadImage = async ({
-  url, id, version, config, uploadToken, mac
+  url, compressUrl, id, version, config, uploadToken, mac
 }) => {
   return new Promise((resolve, reject) => {
     const key = `${POST_PREFIX}/${id}-${version}${path.extname(url.slice(0, url.indexOf('?')))}`
@@ -66,7 +69,7 @@ const uploadImage = async ({
       if (!isUploaded) {
         const formUploader = new qiniu.form_up.FormUploader(config)
         const putExtra = new qiniu.form_up.PutExtra()
-        https.get(url, {}, (readableStream) => {
+        https.get(compressUrl, {}, (readableStream) => {
           formUploader.putStream(uploadToken, key, readableStream, putExtra,
             function (respErr,
               respBody,
@@ -96,35 +99,54 @@ const uploadImage = async ({
 export const replaceImgCdn = async (
   recordMap
 ) => {
-  const id = Object.keys(recordMap.block)[0]
-  const blocks = recordMap.block[id]?.value
   const {
     config,
     uploadToken,
     mac
   } = uploadConfig()
 
-  if (blocks?.content) {
-    for (let i = 0; i < blocks?.content?.length; i++) {
-      const contentBlockId = blocks?.content[i]
-      const block = recordMap.block[contentBlockId]
-      if (block?.value?.type === 'image') {
-        const url = recordMap.signed_urls?.[contentBlockId] ||
+  const allBlocks = Object.keys(recordMap.block)
+
+  console.log(JSON.stringify(recordMap))
+
+  for (let i = 0; i < allBlocks?.length; i++) {
+    const contentBlockId = allBlocks[i]
+    const block = recordMap.block[contentBlockId]
+    if (block?.value?.type === 'image') {
+      const url = recordMap.signed_urls?.[contentBlockId] ||
           block?.value?.properties?.source?.[0]?.[0]
-        const result = await uploadImage({
-          url,
-          id: contentBlockId,
-          version: block?.value?.version,
-          config,
-          uploadToken,
-          mac
-        })
-        if (result) {
-          console.log('replace img cdn', result)
-          block.value.properties.source[0][0] = result
-          block.value.format.display_source = result
-          recordMap.signed_urls[contentBlockId] = result
-        }
+      const compressUrl = defaultMapImageUrl(url, block.value)
+
+      // 处理压缩图片大小
+      const compressURL = new URL(compressUrl)
+      const size = block?.value?.properties?.size?.[0]?.[0]
+      const formatWidth = block?.value?.format?.block_width || 0
+      if (
+        size &&
+        bytes(size) > 1024 * 1024 * 2
+      ) {
+        compressURL.searchParams.set(
+          'width',
+          formatWidth / 1.5 > DEFAULT_WIDTH
+            ? formatWidth / 2
+            : DEFAULT_WIDTH
+        )
+      }
+
+      const result = await uploadImage({
+        url,
+        compressUrl: compressURL.toString(),
+        id: contentBlockId,
+        version: block?.value?.version,
+        config,
+        uploadToken,
+        mac
+      })
+      if (result) {
+        console.log('replace img cdn', result)
+        block.value.properties.source[0][0] = result
+        block.value.format.display_source = result
+        recordMap.signed_urls[contentBlockId] = result
       }
     }
   }
