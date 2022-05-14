@@ -107,8 +107,6 @@ export const replaceImgCdn = async (
 
   const allBlocks = Object.keys(recordMap.block)
 
-  console.log(JSON.stringify(recordMap))
-
   for (let i = 0; i < allBlocks?.length; i++) {
     const contentBlockId = allBlocks[i]
     const block = recordMap.block[contentBlockId]
