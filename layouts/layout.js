@@ -1,12 +1,15 @@
 import Image from 'next/image'
 import Container from '@/components/Container'
 import TagItem from '@/components/TagItem'
-import { NotionRenderer, Equation, Code, Collection, CollectionRow } from 'react-notion-x'
+import { NotionRenderer, Equation, Code, Collection, CollectionRow, defaultMapImageUrl } from 'react-notion-x'
 import BLOG from '@/blog.config'
 import formatDate from '@/lib/formatDate'
 import { useLocale } from '@/lib/locale'
 import { useRouter } from 'next/router'
 import Comments from '@/components/Comments'
+import {
+  CDN_URL
+} from '@/lib/constants'
 
 const mapPageUrl = id => {
   return 'https://www.notion.so/' + id.replace(/-/g, '')
@@ -76,6 +79,14 @@ const Layout = ({
                 collectionRow: CollectionRow
               }}
               mapPageUrl={mapPageUrl}
+              mapImageUrl={(url, block) => {
+                if (
+                  url.includes(CDN_URL)
+                ) {
+                  return url
+                }
+                return defaultMapImageUrl(url, block)
+              }}
             />
           </div>
         )}
