@@ -3,14 +3,14 @@
 .notion {
   @apply text-gray-600 dark:text-gray-300;
   overflow-wrap: break-word;
+  @apply tracking-wider;
 }
 .notion,
 .notion-text,
 .notion-quote,
 .notion-h-title {
-  @apply leading-8;
-  @apply p-0;
-  @apply my-3;
+  @apply leading-6;
+  @apply py-1;
 }
 .notion-page-link {
   color: inherit;
@@ -66,6 +66,7 @@ pre[class*='language-'] {
 }
 .notion-quote {
   padding: 0.2em 0.9em;
+  @apply leading-normal;
 }
 .notion-collection {
   @apply max-w-full;

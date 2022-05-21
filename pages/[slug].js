@@ -28,7 +28,9 @@ export async function getStaticProps ({ params: { slug } }) {
   const posts = await getAllPosts({ includePages: true })
   const post = posts.find(t => t.slug === slug)
   const blockMap = await getPostBlocks(post.id)
-  await replaceImgCdn(blockMap)
+  if (process.env.NODE_ENV !== 'development') {
+    await replaceImgCdn(blockMap)
+  }
   const emailHash = createHash('md5')
     .update(BLOG.email)
     .digest('hex')
