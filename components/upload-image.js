@@ -59,7 +59,7 @@ const uploadImage = async ({
   url, compressUrl, id, version, config, uploadToken, mac
 }) => {
   return new Promise((resolve, reject) => {
-    const key = `${POST_PREFIX}/${id}-${version}${path.extname(url.slice(0, url.indexOf('?')))}`
+    const key = `${POST_PREFIX}/${id}-${version}${path.extname(url.slice(0, url.indexOf('?') === -1 ? url.length : url.indexOf('?')))}`
     checkStat({
       mac,
       config,
@@ -99,6 +99,7 @@ const uploadImage = async ({
 export const replaceImgCdn = async (
   recordMap
 ) => {
+  const startTime = new Date().getTime()
   const {
     config,
     uploadToken,
@@ -148,4 +149,6 @@ export const replaceImgCdn = async (
       }
     }
   }
+  const endTime = new Date().getTime()
+  console.log('持续时间', (endTime - startTime) / 1000)
 }
